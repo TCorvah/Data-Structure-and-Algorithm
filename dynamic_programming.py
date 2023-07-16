@@ -27,7 +27,5 @@ A = [1,5,8,9, 10, 17, 17, 20, 24, 30]
 num = 2
 print(CutRod(A, num))
 
-#def bottom_up(p, n):
-#   r = [[0] * n for i in range(n)]
 
 
