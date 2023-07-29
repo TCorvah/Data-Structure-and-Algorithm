@@ -6,9 +6,6 @@ class Stack():
 
 	def __init__(self):
 		self.graph = []
-
-	def getStack(self):
-		return self.graph
 	
 	def isEmpty(self):
 		if self.graph == []:
@@ -33,36 +30,27 @@ class Stack():
 			item = self.graph.pop()		
 			return item
 		
-	def rev(self):
-		self.graph.reverse()
 
 mystack = Stack()		
-def depthFirst(graph, src):
-	mystack.push(src)
-	print("initial stack", src)
+def LiFo(graph, src):
 	visited = set()
 	visited.add(src)
+	mystack.push(src)
+	print("initial element on stack", src)
 	while not mystack.isEmpty():
-		current = mystack.pop()
-		print("popping from stack", current)
-		for neighbor in range(1, len(graph)):
-			print(" node neighbor", neighbor)
+		for neighbor in graph:
 			if neighbor not in visited:
 				visited.add(neighbor)
 				mystack.push(neighbor)
+				print(" pushing on stack", neighbor)
+		current = mystack.pop()
+		print("popping from stack", current)
 	return "done"
 				
-	
-
-
-
-
-
-
 
 if __name__ == "__main__":
 	graph = [0, 1, 2, 7]
-	x = depthFirst(graph, 0)
+	x = LiFo(graph, 0)
 	print(x)
 	
 
