@@ -32,8 +32,9 @@ class Stack():
 		
 
 mystack = Stack()		
-def LiFo(graph, src):
+def LiFo(graph):
 	visited = set()
+	src = graph[0]
 	visited.add(src)
 	mystack.push(src)
 	print("initial element on stack", src)
@@ -50,7 +51,7 @@ def LiFo(graph, src):
 
 if __name__ == "__main__":
 	graph = [0, 1, 2, 7]
-	x = LiFo(graph, graph[0])
+	x = LiFo(graph)
 	print(x)
 	
 
