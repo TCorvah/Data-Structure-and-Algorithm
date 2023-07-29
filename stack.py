@@ -50,7 +50,7 @@ def LiFo(graph, src):
 
 if __name__ == "__main__":
 	graph = [0, 1, 2, 7]
-	x = LiFo(graph, 0)
+	x = LiFo(graph, graph[0])
 	print(x)
 	
 
