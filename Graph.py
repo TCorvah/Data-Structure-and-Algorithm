@@ -3,6 +3,7 @@ import sys
 import math
 import collections
 
+
 #edge class for neighbor and cost
 class Edge():
     def __init__(self, neighbor, cost) -> None:
