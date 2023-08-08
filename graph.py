@@ -1,121 +1,92 @@
 from collections import defaultdict
+import sys
+import math
+import collections
 
-class Node:
-    def __init__(self,vertex):
-        self.vertex = vertex
-        self.next = None
+#edge class for neighbor and cost
+class Edge():
+    def __init__(self, neighbor, cost) -> None:
+        self.neighbor = neighbor
+        self.cost = math.fabs(cost)
 
-class Queue:
-  def __init__(self):
-     self.front = None
-       
+    def __str__(self) -> str:
+        return "(" + str(self.neighbor)
 
-  def isEmpty(self):
-      if self.front ==  None:
-         print("queue is empty\n")
-         return True
-      else:
-          return False
-      
-         
-  def enqueue(self, value):
-      node = Node(value)
-      if self.isEmpty():
-          self.front = node
-      else:
-          temp = self.front
-          while temp.next:
-                temp= temp.next
-          temp.next = node
-               
-
-  def dequeue(self):
-      data = Node(self.front.vertex)
-      temp = self.front
-      self.front = (self.front).next
-      del temp
-      return data.vertex
-     
-            
-  def PrintQueue(self):
-      print("elements in queue\n")
-      queue = self.front
-      while queue:
-            print("Queue -> {}\n".format(queue.vertex), end="")
-            queue = queue.next
-      print("\n")
-
+ #a directed graph implementation using adjacency list 
 class Graph:
-    def __init__(self, numVertices):
-        self.v = numVertices
-        self.adjlist = defaultdict(list)
-        self.visited = set() 
-        self.front = None
-               
-            
-    def addEdge(self, src, dest):
-        #add edge from src to dest:
-        newNode = Node(dest)
-        newNode.next = self.adjlist[src]
-        self.adjlist[src] = newNode
-        #add edge from dest to src:  
-        #newNode = Node(src)       
-        #newNode.next = self.adjlist[dest]
-        #self.adjlist[dest] = newNode
+    def __init__(self):
+        self.graphMatrix = {}
 
 
-    def  printGraph(self):
-        for i in range(self.v):
-            temp = self.adjlist[i]
-            print("Adjacency list of vertex {}\n head ".format(i), end=" ")   
-            while temp:
-                print(" -> {}".format(temp.vertex), end="")
-                temp = temp.next
-            print(" \n")
+    # add nodes to the graph, does not take duplicate as this is directed.
+    def addNodes(self, node):
+        if node in self.graphMatrix.keys():
+            return False
+        self.graphMatrix[node] = []
+        return True
+    
 
-    def bfs(self,startVertex): 
-        queue = Queue()
-        queue.enqueue(startVertex)  
-        self.visited.add(startVertex)  
-        for i in range(self.v):
-            temp = self.adjlist[i]
-            while temp:
-                queue.PrintQueue() 
-                queue.enqueue(temp.vertex) 
-                self.visited.add(temp.vertex)                
-                currentVertex = queue.dequeue()
-                print("Visited -> {}\n".format(currentVertex), end="")    
-                temp  = temp.next
-          
-              
-def main():   
-    print("\ninitial graph operation")
-    val = int(input("Enter number of vertices: "))
-    print(val)
-    graph = Graph(val)
-    while True:
-            print("\nWhat do you want to do?\n")
-            print("1. Add edge\n")
-            print("2. Print graph\n")
-            print("3. BFS\n")
-            print("4. Exit\n")
-            choice = int(input("Enter your choice: "))        
-            if choice == 1:
-                 user_input = input("Enter source and destination:  ")
-                 src, dest = tuple(int(item) for item in user_input.split())
-                 print(src,dest)
-                 graph.addEdge(src, dest)
-            elif choice == 2:
-                 graph.printGraph()
-            elif choice == 3:    
-                 startVertex = int(input("Enter starting vertex:  "))
-                 print("starting vertex:",startVertex)
-                 graph.bfs(startVertex)
-            elif choice == 4:
-                 print("bye\n")
-                 break
-            else:
-                 print("Invalid choice")
-if __name__ == "__main__":
-    main()
+    #add edge to the graph, nodes must be present or else an error is thrown
+    def addEdge(self, start, dest, cost):
+        if start not in self.graphMatrix.keys() or dest not in self.graphMatrix.keys():
+            print("error, both nodes must be present in the graph")
+        #edge = Edge(dest, cost)
+        #edge.neighbor = dest
+        #edge.cost = cost
+        self.graphMatrix[start] = [dest, math.fabs(cost)]
+        return self.graphMatrix
+    
+    # check if two nodes have edge in common
+    def hasEdge(self, start, dest):
+        n1 = []
+        if start in self.graphMatrix:
+            n1 = self.graphMatrix[start]
+            if dest in n1:
+                print(start, "have a direct edge with ",dest)
+                return True
+            print(start, "does not have a direct edge with ",dest)
+            return False
+    
+    #remove specific edge from the graph
+    def removeEdge(self, start, dest):
+        n1 = self.graphMatrix[start]
+        if self.hasEdge(start, dest) == True:
+            n1.remove(dest)
+        else:
+            print(" no direct edge from", start, "to", dest)
+        return self.graphMatrix
+    #provides a view of prior edges
+    def edgesFrom(self, node):
+        arcs =  self.graphMatrix.get(node)
+        if arcs == None:
+            print("source node does not exist")
+        return list(arcs)
+    
+    # iterates throu each node in the graph
+    def iterator(self):
+        lst = []
+        for k in self.graphMatrix.keys():
+            lst.append(k)
+        return lst
+    
+
+g = Graph()
+print(g.addNodes(0))
+print(g.addNodes(5))
+print(g.addNodes(4))
+print(g.addNodes(7))
+print(g.addEdge(0, 5, 9))
+print(g.addEdge(5, 4, 3))
+print(g.hasEdge(0, 4))
+print(g.removeEdge(0, 5))
+print(g.edgesFrom(0))
+print(g.edgesFrom(5))
+print(g.iterator())
+
+
+
+
+
+
+        
 
