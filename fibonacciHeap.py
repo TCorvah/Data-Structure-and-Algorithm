@@ -27,15 +27,14 @@ class FibTree():
         self.checkPriority(priority)
         if self.mMinimum == None and self.Size <= 0:
             self.mMinimum = FibHeap(key, priority)
-        self.mMinimum.mElem = key
-        self.mMinimum.priority = priority
-        self.mMinimum.right = self.mMinimum.right = self
-        self.mMinimum.nDegree = 0
-        self.mMinimum.parent = self.mMinimum.child = None
-        self.mMinimum.Mark = False
-        self.treeList.append((self.mMinimum.mElem, self.mMinimum.priority))
-        if self.Size >= 1  and key < self.mMinimum.mElem:      
-            self.treeList.insert(0, (key,priority))
+            self.mMinimum.right = self.mMinimum.right = self
+            self.mMinimum.nDegree = 0
+            self.mMinimum.parent = self.mMinimum.child = None
+            self.mMinimum.Mark = False
+        if key < self.mMinimum.mElem:   
+            self.mMinimum.mElem = key
+            self.mMinimum.priority = priority  
+        self.treeList.append((key, priority))
         self.Size += 1
         return self.treeList
        
@@ -47,7 +46,7 @@ class FibTree():
 
     #check if the heap is empty. the size of the heap is the len of the list
     def isEmpty(self):
-        if self.Size <= 0:
+        if self.mMinimum == None:
             return None
 
     #this operation finds the minimum node in the heap along with it's priority
@@ -70,7 +69,7 @@ class FibTree():
         self.Size = tree1.Size + tree2.Size
         tree1.treeList.clear()
         tree2.treeList.clear()
-        return self.mMinimum
+        return [self.mMinimum.mElem, self.mMinimum.priority]
     
     #the following procedure extracts the minimum node from the rootlist and adds it children
     # to the rootlist, if it has
@@ -88,6 +87,7 @@ class FibTree():
             for child in list(minElem.mMinimum.child):
                 self.treeList.append(child)
                 minElem.mMinimum.child.parent = None
+                minElem.mMinimum.nDegree = 0
             self.treeList.remove((minElem.mMinimum.parent).mElem, (minElem.mMinimum.parent).priority)
             if minElem.mMinimum == minElem.mMinimum.right:
                 self.mMinimum = None
@@ -113,9 +113,9 @@ class FibTree():
             while arr[d] != []:
                 y = FibHeap(elem.mMinimum.mElem, elem.mMinimum.priority)
                 if arr[y.nDegree] == arr[d]:
-                    if x.mElem > y.mElem:
-                        y = x
-                    self.fib_Link(self, y, x)
+                    if x.mElem > y.mElem and x.priority < y.priority:
+                        self.fib_Link(x,y)
+                    self.fib_Link(y, x)
                     arr[d] = None
                     d += 1
             arr[d] = x
@@ -128,7 +128,7 @@ class FibTree():
                     self.mMinimum.mElem = arr[i]
                     self.treeList.append((self.mMinimum.mElem, self.mMinimum.priority))
                 else:
-                    if arr[i] < self.mMinimum.mElem:
+                    if arr[i] < (self.mMinimum.mElem,self.mMinimum.priority):
                         self.mMinimum.mElem = arr[i]
                         self.treeList.append((self.mMinimum.mElem, self.mMinimum.priority))
 
@@ -140,11 +140,16 @@ class FibTree():
         y.mMinimum.child = None
         y.mMinimum.nDegree = 0
         y.mMinimum.parent = x
+        if y.mMinimum.priority < x.mMinimum.priority:
+           x.mMinimum.priority = y.mMinimum.priority
         self.treeList.remove(y)
         x.mMinimum.nDegree += 1
         self.Size -= 1
         y.mMinimum.Mark = False
+           
 
+            
+    
     #the following function decrease key ensures that the new  key to be
     #inserted is less than the current key, otherwise an exception is thrown.
     # if the node who key is to be decrease is a root and it has parent with key
@@ -152,10 +157,7 @@ class FibTree():
     # it's parent, else the node and key is save as the new minimum
     def fib_decrease(self, x, key):
         x = self
-        x.mMinimum.mElem = x.mMinimum.parent = self
-        temp1 = list(self.mMinimum.mElem, self.mMinimum.priority)
-        temp2 = list(x.mMinimum.mElem, x.mMinimum.priority)
-        
+        x.mMinimum.mElem = x.mMinimum.parent = self  
         if key > x.mMinimum.mElem:
             print("new key is greater than current")
         x.mMinimum.mElem = key
@@ -193,7 +195,7 @@ class FibTree():
 
     def delete(self, x):
         x = self.mMinimum
-        self.fib_decrease(x)
+        self.fib_decrease(x, math.inf("inf") )
         self.extractMin()
     
 
@@ -215,8 +217,13 @@ class FibTree():
 
 
 fib = FibTree()
+print(fib.insert(1, 10))
+print(fib.insert(10, 5))
+print(fib.insert(3, 6))
+print(fib.insert(2, 9))
 print(fib.insert(8, 7))
-print(fib.insert(1, 6))
 print(fib.getMin())
 print(fib.extractMin())
+
+
 
