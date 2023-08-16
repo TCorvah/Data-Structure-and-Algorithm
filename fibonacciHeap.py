@@ -5,8 +5,7 @@ class FibHeap():
     def __init__(self, elem, priority ):
         self.nDegree = 0
         self.Mark = False
-        self.left = None
-        self.right = None
+        self.right = self.left = self
         self.parent = None
         self.child = None
         self.mElem = elem
@@ -17,26 +16,33 @@ class FibTree():
         self.mMinimum = None
         self.treeList = []
         self.Size = len(self.treeList)
-        self.NodeFound = False
 
     #inserts a node in the rootlist if empty, it creates a singleton tree
     #if not empty, the new node key is compare with current node key and 
-    # gets inserted in it's appropiate index position
+    # the value of the new node is compare with the value of the current node
+    # if the keys are the same and the value of the current node is less than
+    # the value of the new node, the new min stays the same, else the new minimum
+    # is the new node key, value.
     def insert(self, key, priority):
         priority = math.fabs(priority)
         self.checkPriority(priority)
         if self.mMinimum == None and self.Size <= 0:
             self.mMinimum = FibHeap(key, priority)
-            self.mMinimum.right = self.mMinimum.right = self
+            self.mMinimum.mElem = key
+            self.mMinimum.priority = priority
             self.mMinimum.nDegree = 0
             self.mMinimum.parent = self.mMinimum.child = None
             self.mMinimum.Mark = False
-        if key < self.mMinimum.mElem:   
+        if key < self.mMinimum.mElem and priority >  self.mMinimum.priority:   
             self.mMinimum.mElem = key
             self.mMinimum.priority = priority  
+        elif key < self.mMinimum.mElem:
+            key = self.mMinimum.mElem
+            priority = self.mMinimum.priority
         self.treeList.append((key, priority))
         self.Size += 1
         return self.treeList
+    
        
     #make sure the pririty is a float and is not None
     def checkPriority(self, priority):
@@ -55,22 +61,26 @@ class FibTree():
             print("empty heap")
         return self.mMinimum.mElem, self.mMinimum.priority
     
-    #given two sub heaps, this operation merge the two 
-    #heaps, determine the new minimum node for the mergeable trees thus 
-    #destroying tree1 and tree2 in the process.
-    def fib_Union(self, tree1, tree2):
-        tree1 = self
-        tree2 = self
-        if ((tree1.mMinimum is not None) and tree1.mMinimum.mElem < tree2.mMinimum.mElem):
-            self.mMinimum = tree1.mMinimum 
-        if (tree1.mMinimum == None or tree1.treeList == []) or ((tree2.mMinimum is not None or tree2.treeList != []) and tree2.mMinimum.mElem < tree1.mMinimum.mElem):
-            self.mMinimum = tree2.mMinimum  
-        self.treeList = tree1.treeList + tree2.treeList   
-        self.Size = tree1.Size + tree2.Size
-        tree1.treeList.clear()
-        tree2.treeList.clear()
-        return [self.mMinimum.mElem, self.mMinimum.priority]
-    
+    #given two sub heaps, this operation merges the two 
+    #heaps, determine the new minimum node for the mergeable trees
+    def fib_Union(self,lst1, lst2):
+        self.treeList = lst1 + lst2
+        print(self.treeList)
+        for i,j in lst1:
+            x = FibHeap(i,j) 
+            x.mElem = i
+            x.priority = j   
+        for z,y in lst2:
+            c = FibHeap(z, y)
+            c.mElem = z
+            c.priority = y
+        if  c.mElem <  x.mElem:
+            self.mMinimum = c.mElem, c.priority
+            return self.mMinimum
+        if c.mElem > x.mElem:
+            self.mMinimum = x.mElem, x.priority
+            return self.mMinimum
+        print(self.treeList)
     #the following procedure extracts the minimum node from the rootlist and adds it children
     # to the rootlist, if it has
     # this works by first making a root out of the minimum node children
@@ -89,6 +99,8 @@ class FibTree():
                 minElem.mMinimum.child.parent = None
                 minElem.mMinimum.nDegree = 0
             self.treeList.remove((minElem.mMinimum.parent).mElem, (minElem.mMinimum.parent).priority)
+            if (minElem.mMinimum.parent).mElem == self.mMinimum.mElem and self.mMinimum.priority < minElem.mMinimum.parent.priority:
+                self.treeList.remove(self.mMinimum.mElem, self.mMinimum.priority)
             if minElem.mMinimum == minElem.mMinimum.right:
                 self.mMinimum = None
                 self.treeList.clear()
@@ -103,17 +115,16 @@ class FibTree():
     # trees of equal degree together. given two trees x and y in the rootlist with the same degree, 
     # if x.key <= y.key, the helper function Fib_Link will make y a child of x, thus merging Y with x.
     # this happens until only trees of distinct degree are in the rootlist.
-    def consolidate(self):
-        arr = []
+    def consolidate(self):   
         elem = self
-        elem.mMinimum.mElem = elem.mMinimum.nDegree
+        arr = [None] * elem.mMinimum.nDegree
         for elem.mMinimum.mElem, elem.mMinimum.priority in self.treeList:
             x = FibHeap(elem.mMinimum.mElem, elem.mMinimum.priority)
             d = x.nDegree
             while arr[d] != []:
                 y = FibHeap(elem.mMinimum.mElem, elem.mMinimum.priority)
                 if arr[y.nDegree] == arr[d]:
-                    if x.mElem > y.mElem and x.priority < y.priority:
+                    if x.mElem > y.mElem:
                         self.fib_Link(x,y)
                     self.fib_Link(y, x)
                     arr[d] = None
@@ -125,11 +136,11 @@ class FibTree():
             if arr[i] != []:
                 if self.mMinimum.mElem == None and self.Size <= 0:
                     self.mMinimum.right = self.mMinimum.left = self.mMinimum.mElem
-                    self.mMinimum.mElem = arr[i]
+                    self.mMinimum.mElem, self.mMinimum.priority = arr[i]
                     self.treeList.append((self.mMinimum.mElem, self.mMinimum.priority))
                 else:
                     if arr[i] < (self.mMinimum.mElem,self.mMinimum.priority):
-                        self.mMinimum.mElem = arr[i]
+                        self.mMinimum.mElem, self.mMinimum.priority = arr[i]
                         self.treeList.append((self.mMinimum.mElem, self.mMinimum.priority))
 
     # given two trees of equal degree(equal amount of children), if x.key <= y.key,
@@ -142,7 +153,9 @@ class FibTree():
         y.mMinimum.parent = x
         if y.mMinimum.priority < x.mMinimum.priority:
            x.mMinimum.priority = y.mMinimum.priority
-        self.treeList.remove(y)
+        p = self.treeList.remove(y.mMinimum.mElem, y.mMinimum.priority)
+        x_list = []
+        x_list.append(p)
         x.mMinimum.nDegree += 1
         self.Size -= 1
         y.mMinimum.Mark = False
@@ -217,13 +230,14 @@ class FibTree():
 
 
 fib = FibTree()
-print(fib.insert(1, 10))
-print(fib.insert(10, 5))
-print(fib.insert(3, 6))
-print(fib.insert(2, 9))
-print(fib.insert(8, 7))
-print(fib.getMin())
-print(fib.extractMin())
+#print(fib.insert(1, 5))
+#print(fib.insert(10, 5))
+#print(fib.insert(1, 6))
+#print(fib.insert(2, 9))
+#print(fib.insert(8, 7))
+print(fib.fib_Union([(7,4), (9,2)], [(7,9), (6,4)]))
+
+
 
 
 
