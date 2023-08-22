@@ -52,30 +52,7 @@ class FibTree():
             self.mMinimum = new_node    
         self.treeList.append(((new_node.mElem,new_node.priority)))
         self.smallestElem(self.treeList)
-        self.Size += 1
-     
-
-            
-    def traverse(self, node):
-        if node is None:
-           node = self.mMinimum
-        tree = node
-        while tree is not None and (tree.right != node):
-            yield tree
-            tree = tree.right
-        yield tree
-
-    def printList(self):
-        current = self.mMinimum
-        while current is not None:
-            print((self.mMinimum.mElem, self.mMinimum.priority))
-            current = current.right
-
-    def printTree(self):
-        for i in range(0, len(self.treeList)):
-            if self.treeList[i] <  (self.mMinimum.mElem,self.mMinimum.priority):
-                self.mMinimum = self.treeList[i]
-            
+        self.Size += 1         
        
     #make sure the pririty is a float and is not None
     def checkPriority(self, priority):
@@ -127,11 +104,11 @@ class FibTree():
                 self.treeList = []
             else:
                 self.mMinimum = minElem.right
-                self.consolidate()
-            
-        self.treeList.remove((minElem.mElem, minElem.priority))
+                self.consolidate() 
+        #decided to use pop instead of remove so that I can safely use the return value in my astar algorithm     
+        x = self.treeList.pop(0)
         self.Size -= 1
-        return minElem.mElem,minElem.priority
+        return x
 
 
     # the consolidate function reduces the number of trees in the rootlist by merging
@@ -239,7 +216,6 @@ print('value of the fibonacci heap: {}'.format(fib.treeList))
 print('the minimum value of the fibonacci heap: {}'.format(fib.getMin()))
 print('the minimum value remove from the rootlist of the fibonacci heap: {}'.format(fib.extractMin()))
 print(fib.insert(2, 9))
-#fib.printList()
 print('before removing the  minimum value of the fibonacci heap: {}'.format(fib.treeList))
 print('the minimum value of the fibonacci heap: {}'.format(fib.getMin()))
 print('the minimum value remove from the rootlist of the fibonacci heap: {}'.format(fib.extractMin()))
@@ -252,8 +228,6 @@ print('after removing the  minimum value of the fibonacci heap: {}'.format(fib.t
 #print(fib.extractMin())
 #print(fib.insert(1, 2))
 #print('the minimum value of the fibonacci heap: {}'.format(fib.getMin()))
-#fib.printList()
-#fib.printTree()
 #print(fib.getMin())
 #print(fib.extractMin())
 #print(fib.fib_Union([(1,4), (9,2)], [(7,9), (6,4)]))
