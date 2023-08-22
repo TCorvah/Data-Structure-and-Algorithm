@@ -48,46 +48,48 @@ class NodeComparator(NodeData):
 class AStar():
     def __init__(self):
         self.queue = FibTree()
-        self.nodeMap = NodeData()
-    def getShortestPath(self,graph, source, dest, heuristics):
-        NodeMap = NodeData().NodeDict
-        heapEntries = NodeData().NodeDict,
+        self.nodeMap = NodeData().NodeDict
+        self.graph = Graph()
+        self.entries = {}
+        self.closelist = NodeData().visited
+        self.neighbor = self
+       
+
+    def getShortestPath(self,source, dest, heuristics):
         heuristics = AStarHeuristic.AStarHeuristics
-        graph = Graph()
         sourcedata = NodeData(source)
         sourcedata.setGcost(0)
         fScore =  sourcedata.calcFCost(heuristics.getWeight(source,dest))
-        NodeMap.append((source, sourcedata))
-        heapEntries.append(sourcedata,self.queue.insert(sourcedata,fScore))
+        self.nodeMap[source] = sourcedata
+        self.entries[sourcedata] = self.queue.insert(sourcedata,fScore)
         path = {} 
-        closeList = NodeData().visited
+        closeList = self.closelist
         while not self.queue.isEmpty:
-            nodedata  = NodeData(self.queue.extractMin()) 
-            if nodedata.getNode() == dest:
-                return(list(tuple(self.reconstructPath(path, dest), nodedata.getGcost())))
-            closeList.add(nodedata)
-            neighborEntry = graph.edgesFrom(nodedata.getNode())
-            for key in neighborEntry:
-            #for neighbor in graph.edgesFrom(nodedata.getNode()):
-                entrynode = neighborEntry[key]
-              
-                if entrynode in NodeMap.keys():
-                    ne = NodeMap.get(entrynode)
+            nodedata  = self.queue.extractMin()
+            extract_node = NodeData(nodedata)
+            if extract_node.getNode() == dest:
+                return(list(tuple(self.reconstructPath(path, dest), extract_node.getGcost)))
+            closeList.add(extract_node)
+            for neighborEntry in self.graph.edgesFrom(extract_node.getNode()):
+            #for neighbor in graph.edgesFrom(nodedata.getNode()):         
+                entrynode = neighborEntry        
+                if entrynode in self.nodeMap.keys():
+                    self.neighbor = self.nodeMap.get(entrynode)
                 else:
-                    ne = NodeData(entrynode)
-                    NodeMap.apend((entrynode, ne))
-                if ne in closeList:
+                    self.neighbor = NodeData(entrynode)
+                    self.nodeMap[entrynode].append(self.neighbor)
+                if self.neighbor in closeList:
                     continue
                 distanceBtwnNodes = neighborEntry
-                tentativeGscore = distanceBtwnNodes + nodedata.getGcost()
-                if tentativeGscore < ne.getGcost():
-                    ne.setGcost(tentativeGscore)
-                    fScore = ne.calcFCost(heuristics.getWeight(ne.getNode(), dest))
-                    path.append((ne.getNode(), nodedata.getNode()))
-                    if ne not in heapEntries:
-                        heapEntries.append(ne, self.queue.insert(ne, fScore))
+                tentativeGscore = distanceBtwnNodes + extract_node.getGcost()
+                if tentativeGscore < self.neighbor.getGcost():
+                    self.neighbor.setGcost(tentativeGscore)
+                    fScore = self.neighbor.calcFCost(heuristics.getWeight(self.neighbor.getNode(), dest))
+                    path.append((self.neighbor.getNode(), extract_node.getNode()))
+                    if self.neighbor not in self.entries:
+                        self.entries[self.neighbor] =  self.queue.insert(self.neighbor, fScore)
                     else:
-                       self.queue.fib_decrease(heapEntries.get(ne), fScore)
+                       self.queue.fib_decrease(self.entries.get(self.neighbor.getNode()), fScore)
 
         return None
     
@@ -97,7 +99,7 @@ class AStar():
         pathList = []
         pathList.append(dest)
         while dest in path.keys():
-            dest = path[dest]
+            dest = path.get(dest)
             pathList.append(dest)
         pathList.reverse()
         return pathList
