@@ -1,91 +1,102 @@
 from collections import defaultdict
+from nodes import Node
 
-class Node:
-    def __init__(self,vertex):
-        self.vertex = vertex
-        self.next = None
-
+# A singly linklist queue implementation using breadth first search algorithm
+# in my implementation, there is no extra pointer for rear as the next element will be
+#the rear of the front of the linklist. A single pointer is initialize for the queue class
 class Queue:
-  def __init__(self):
-     self.front = None
-       
+    def __init__(self):
+        self.front = None           
 
-  def isEmpty(self):
-      if self.front ==  None:
-         print("queue is empty\n")
-         return True
-      else:
-          return False
-      
-         
-  def enqueue(self, value):
-      node = Node(value)
-      if self.isEmpty():
-          self.front = node
-      else:
-          temp = self.front
-          while temp.next:
-                temp= temp.next
-          temp.next = node
+    def isEmpty(self):
+        """Returns true if queue is empty, otherwise returns False"""
+        if self.front ==  None:
+            print("queue is empty\n")
+            return True
+        else:
+            return False
+
+   
+    def enqueue(self, value):
+        """This function adds a new element at the back of the queuue
+            if the queue is empty, then the element becomes the first queue item
+        """
+        node = Node(value)
+        if self.isEmpty():
+            self.front = node
+        else:
+            temp = self.front
+            while temp.right:
+                temp = temp.right
+            temp.right = node
                
 
-  def dequeue(self):
-      data = Node(self.front.vertex)
-      temp = self.front
-      self.front = (self.front).next
-      del temp
-      return data.vertex
-     
-            
-  def PrintQueue(self):
-      print("elements in queue\n")
-      queue = self.front
-      while queue:
-            print("Queue -> {}\n".format(queue.vertex), end="")
-            queue = queue.next
-      print("\n")
+    def dequeue(self):
+        """ Remove the first item added in the quue and returns the data of
+            the remove queue element 
+        """
+        data = self.front.key
+        temp = self.front
+        self.front = self.front.right
+        temp1 = None
+        temp = temp1
+        return data
 
+
+    def PrintQueue(self):
+        """Prints the queue element and it nearest neighbor in the directed
+            graphs
+        """
+        print("elements in queue\n")
+        queue = self.front
+        while queue:
+            print("Queue -> {}\n".format(queue.key), end="")
+            queue = queue.right
+        print("\n")
+#A graph class using adjacency list representation. in this implementation, a directed
+# graph is being used. the grah class initialize the number of vertices, visited set and the queue class
 class Graph:
     def __init__(self, numVertices):
         self.v = numVertices
         self.adjlist = defaultdict(list)
         self.visited = set() 
-        self.front = None
+        self.queue = Queue()
                
             
     def addEdge(self, src, dest):
         #add edge from src to dest:
         newNode = Node(dest)
-        newNode.next = self.adjlist[src]
+        newNode.right = self.adjlist[src]
         self.adjlist[src] = newNode
-        #add edge from dest to src:  
-        newNode = Node(src)       
-        newNode.next = self.adjlist[dest]
-        self.adjlist[dest] = newNode
 
 
     def  printGraph(self):
-        for i in range(self.v):
+        for i in range(0, self.v):
             temp = self.adjlist[i]
             print("Adjacency list of vertex {}\n head ".format(i), end=" ")   
             while temp:
-                print(" -> {}".format(temp.vertex), end="")
-                temp = temp.next
+                print(" -> {}".format(temp.key), end="")
+                temp = temp.right
             print(" \n")
 
-    def bfs(self,startVertex): 
-        queue = Queue()
-        queue.enqueue(startVertex)  
-        self.visited.add(startVertex)  
-        for i in range( self.v):
-            temp = self.adjlist[i]
+    def bfs(self,startVertex):       
+        self.queue.enqueue(startVertex)  
+        self.visited.add(startVertex) 
+        while not self.queue.isEmpty():
+            currentVertex = self.queue.dequeue() 
+            print("visited node <- {}\n".format(currentVertex), end="") 
+            self.queue.PrintQueue()         
+            temp = self.adjlist[currentVertex]
             while temp:
-                queue.PrintQueue() 
-                queue.enqueue(temp.vertex) 
-                self.visited.add(temp.vertex)                
-                currentVertex = queue.dequeue()
-                print("deque item -> {}\n".format(currentVertex), end="")    
-                temp  = temp.next
+                adjvertex = temp.key
+                self.queue.PrintQueue()  
+                if adjvertex not in self.visited:
+                    self.visited.add(adjvertex)
+                    self.queue.enqueue(adjvertex)                         
+                temp = temp.right               
+           
+        print()
+      
           
               
 def main():   
