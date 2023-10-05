@@ -47,7 +47,7 @@ class FibTree():
         if self.mMinimum == None and self.Size <= 0:
             self.mMinimum = new_node
             self.mMinimum.nDegree = 0
-            self.mMinimum.Mark = False
+            self.mMinimum.Mark = False 
         if (new_node.mElem,new_node.priority) < (self.mMinimum.mElem ,self.mMinimum.priority):  
             self.mMinimum = new_node    
         self.treeList.append(((new_node.mElem,new_node.priority)))

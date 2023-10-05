@@ -53,6 +53,8 @@ class Queue:
             print("Queue -> {}\n".format(queue.key), end="")
             queue = queue.right
         print("\n")
+
+
 #A graph class using adjacency list representation. in this implementation, a directed
 # graph is being used. the grah class initialize the number of vertices, visited set and the queue class
 class Graph:
@@ -71,7 +73,7 @@ class Graph:
 
 
     def  printGraph(self):
-        for i in range(0, self.v):
+        for i in range((self.v)):
             temp = self.adjlist[i]
             print("Adjacency list of vertex {}\n head ".format(i), end=" ")   
             while temp:
@@ -79,20 +81,22 @@ class Graph:
                 temp = temp.right
             print(" \n")
 
-    def bfs(self,startVertex):       
+    def bfs(self,startVertex): 
+        node = Node(startVertex)  
+        node.parent = None    
         self.queue.enqueue(startVertex)  
         self.visited.add(startVertex) 
         while not self.queue.isEmpty():
             currentVertex = self.queue.dequeue() 
             print("visited node <- {}\n".format(currentVertex), end="") 
             self.queue.PrintQueue()         
-            temp = self.adjlist[currentVertex]
+            temp = self.adjlist[currentVertex]    
             while temp:
                 adjvertex = temp.key
+                self.queue.enqueue(adjvertex) 
                 self.queue.PrintQueue()  
                 if adjvertex not in self.visited:
-                    self.visited.add(adjvertex)
-                    self.queue.enqueue(adjvertex)                         
+                    self.visited.add(adjvertex)                                     
                 temp = temp.right               
            
         print()

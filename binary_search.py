@@ -19,7 +19,7 @@ def binary_search(arr, n):
               return mid 
     return None
 
-# tgiven two list a, b, this code finds the intersection of list a in b using binary search. 
+# given two list a, b, this code finds the intersection of list a in b using binary search. 
 # B has to be sorted and no duplicates allow from both list
 def intersection(a, b):
     m = sorted(b)
