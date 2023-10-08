@@ -5,7 +5,7 @@ class Nodes:
     def __init__(self, data) -> None:
         self.data = data
         self.next = None
-#implementation of the queue data structure, 
+"""! implementation of the queue data structure """
 class Queue:
     def __init__(self) -> None:
         self.head = None
