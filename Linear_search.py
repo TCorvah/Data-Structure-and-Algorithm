@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""! @brief linear search algorithm that returns an index of a specified item """
+"""! @brief A linear search algorithm that returns an index of a specified item """
     
 
 ## 
@@ -12,18 +12,17 @@
 ##
 # @file Linear_Search.py
 def Linear_search(arr, v):
-    """! Seaches the array for a specific item in linear time  
+    """! Searches the array for a specific item in linear time  
     @param arr  The sequence of integers in a list
     @param v     The item to be search for within the array elements
     
-    @return  The index of the target variable
+    @return  The index of the target variable in O(n)
     """
     index = 0
     for i in range(0,len(arr)):
         if v == arr[i]:
             index += i
       
-
     return index
 def main():
     """!    Main program entry. """
