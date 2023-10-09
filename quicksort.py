@@ -9,7 +9,7 @@ The combine step never combine anything but returns the sorted array"""
 ##
 #  @mainpage  subroutine merges two sorted sub array into one using linear time O(n)
 #
-#  @section mergeSort sorts the recursively sorts the element in the  subarray
+#  @section quicksort sorts recursively sorts the element in the  subarray
 #  @section notes_main runtime O(nlgn)
 #  -  Runs in O(nlgn) time for best case and O(n^2) for worst case.
 from random import randrange
@@ -20,7 +20,10 @@ def quick_sort(A, p, r):
         j = random_pivot(A,p,r)
         quick_sort(A, p, j - 1 )
         quick_sort(A, j + 1, r) 
-        
+ 
+"""! helper function randomize the pivot with the following subroutine
+the runtime for the following is O(n), as it retuns partition
+"""       
 def random_pivot(A, p, r):
     x = randrange(p,r)
     A[r], A[x], =  A[x], A[r]
@@ -45,7 +48,6 @@ def partition(A, p, r):
 
 def main():
     """!    Main program entry. """
-
     A = [5,4,1,8,7,2,6,3]
     n = len(A)
     quick_sort(A,0, n - 1)
