@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""! @brief A divide and conquer algorithm that uses subroutine merge to as a helper for merge sort"""
-    
-## 
+"""! @brief A divide and conquer algorithm
+The Divide step in the algorithm evenly splits the array into two halves
+which takes constant time.
+The conquer step recursively solves two subproblem on len(n/2) which takes O(lgn)
+The combine step uses the merge subroutine to combine the elements in increasing order in O(nlgn)"""
+
+##
 #  @mainpage  subroutine merges two sorted sub array into one using linear time O(n)
 #
 #  @section mergeSort sorts the recursively sorts the element in the  subarray
@@ -11,10 +15,10 @@
 ##
 # @file merge_sort.py
 def mergeSort(A):
-    """! Sorts the elements in an array in a bottom up fashion 
+    """! Sorts the elements in an array in a bottom up fashion
     there are two recursive calls made in merge sort 0(lgn)
     @param A  The unsorted sequence of integers in the array
-    
+
     @return  a sorted output using merge subroutine in O(nlgn) time complexity
     """
     if len(A) <= 1:
@@ -28,13 +32,13 @@ def mergeSort(A):
 
 
 def merge(L,R):
-    """! The merge subroutine makes  comparison between the two subarray and 
+    """! The merge subroutine makes  comparison between the two subarray and
          copies the smaller element in the list
     @param A  The unsorted sequence of integers in the array
-    
-    @return  a merge output of the two subarray in O(n) time complexity, 
-    
-    """  
+
+    @return  a merge output of the two subarray in O(n) time complexity,
+
+    """
     arr = []
     i = 0
     j = 0
@@ -42,12 +46,12 @@ def merge(L,R):
         if L[i] <=  R[j]:
             arr.append(L[i])
             i += 1
-        else:      
+        else:
             arr.append(R[j])
             j += 1
     for k in range(i, len(L)):
         arr.append(L[k])
-        
+
     for k in range(j, len(R)):
         arr.append(R[k])
     return arr
@@ -58,11 +62,11 @@ def main():
 
     A = [5,4,1,8,7,2,6,3]
     print(mergeSort(A))
-    
+
 if __name__ == "__main__":
      # The `main()` function is the entry point of the program. It is called when the script is run. In
-    # this case, it calls the `merge_sort()` function with a list `x` and 
+    # this case, it calls the `merge_sort()` function with a list `x` and
     #  then prints the result in sorted order.
-    main()  
+    main()
 
 
