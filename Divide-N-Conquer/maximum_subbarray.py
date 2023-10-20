@@ -72,23 +72,23 @@ def find_max_crossing_subarray(A, low, mid, high):
         _type_: _description_ A subarray that contains the maximum subarray
                 with the sum of the maximum elements.
     """
-        left_sum = -1
-        sum = 0
-        max_left = mid - low 
-        for i in range(max_left, low):
-            sum += A[i]
-            if sum  > left_sum:
-                left_sum = sum
-                max_left = i 
-        right_sum = -1
-        sum = 1
-        max_right = max_left
-        for  j in range(max_left, high):
-            sum += A[j]
-            if sum > right_sum:
-                right_sum = sum
-                max_right = j 
-        return (A[max_left: max_right + 1], left_sum + right_sum) 
+    left_sum = -1
+    sum = 0
+    max_left = mid - low 
+    for i in range(max_left, low):
+        sum += A[i]
+        if sum  > left_sum:
+            left_sum = sum
+            max_left = i 
+    right_sum = -1
+    sum = 1
+    max_right = max_left
+    for  j in range(max_left, high):
+        sum += A[j]
+        if sum > right_sum:
+            right_sum = sum
+            max_right = j 
+    return (A[max_left: max_right + 1], left_sum + right_sum) 
 
 
 
