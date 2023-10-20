@@ -1,8 +1,40 @@
+#!/usr/bin/env python3
+"""! @brief A divide and conquer algorithm
+The maximum subarray problem uses a divide and conqueur technique.
+To find a maximum subarray in an array, we divide the subarray into two subarray,
+with the claim that the maximum subarray must lie in the left half of the array,
+the right half of the array or the point that crosses divide the leftv and right half.
+The conquer step recursively solves two subproblem on len(n/2) of maximum sum. 
+the indices lies in either the left or right half or the mid point crossing.
+"""
+
+##
+#  @mainpage  subroutine max_crossing subarray,takes an input array, with indices of
+# low, mid and high and returns a sublist that contains the maximum array and the sum. 
+# this implementation uses linear time O(n)
+#
+#  @section find_maximum_subarray returns a tuple that demarcates the maximum a maximum subarray
+#  along with the sum of values in a maximum subarray.
+#  @section notes_main runtime O(nlgn + n)
+#  
+
+##
+# @file find_maximum_subarray.py
 import math
+def find_maximum_subarray(A):
+    """! maximum_subarray uses a divide and conqueuer approach to
+    find the indices that demarcates a maximum subarray
+    when n = <= 1, the base case returns the list
+    When n > 1, 
+     The divide part is implemented in as mid, where we take the floor 
+     of the lowest and highest index in the array.
+     We create two subarray and recursively finding the left and right maximum 
+     subarray.   
+    @param A  the list containing the array to be divided.
 
-
-
-def find_maximum_subarray(A):      
+    @return  a maximum subarray  with indices of the maxim sub in a array.
+    """
+          
     if len(A) <= 1:
         return A
     low = 0
@@ -23,8 +55,23 @@ def find_maximum_subarray(A):
         return (right, righ_sum)
     else:
         return (cross, cross_sum)
+    
 
+# @file find_max_crossing_subarray.py
 def find_max_crossing_subarray(A, low, mid, high):
+    """_summary_ The max crossing sub array finds a maximum crossing
+        subarray that crosses the mid point in linear time.
+
+    Args:
+        A (_type_): _description_ The array of integers to find max crossing
+        low (_type_): _description_ The lowest index of array A
+        mid (_type_): _description_ the mid point of array A
+        high (_type_): _description_ The highest index or total len of the array
+
+    Returns:
+        _type_: _description_ A subarray that contains the maximum subarray
+                with the sum of the maximum elements.
+    """
         left_sum = -1
         sum = 0
         max_left = mid - low 
