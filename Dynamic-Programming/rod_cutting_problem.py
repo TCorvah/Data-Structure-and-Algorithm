@@ -62,6 +62,7 @@ def print_cut_rodSolution(price, n):
         @param the price and length of the array n 
         @return None, but prints cuts of revenue  corresponding to the first optimal
         decomposition
+        run time is 0(n) as it prints the value in size,  coresponding to the revenue
     """  
     s = [0 for j in range(n + 1)] 
     (r,s) = extended_rod_cut(price,n)
