@@ -10,23 +10,33 @@ the len(x,y) is assume to be a power of 2.
 import math
 
 def karatsuba(x,y):
+    # initialize the len of x, assume x is even
     n = len(x)
+    # base case if n== 1
     if n == 1:
         return x[0] * y[0]
-    p = []
+    # initialize variable p-list 
+    p = [] 
+    # initialize variable p-list 
     q = []
+    #divides x,y into n/2 elements each, a,b,c,d
     a = [int(str(x[0]) + str(x[1]))]
     b = [int(str(x[2]) + str(x[3]))]
     c = [int(str(y[0])+ str(y[1]))]
     d = [int(str(y[2]) + str(y[3]))]
+    # makes two calls to sum, ab and cd
     t = sum(a + b)
     m = sum(c + d)
+    # makes two append, constant time
     p.append(t)
     q.append(m)
+    #three recursive calls for each n/2 pair to perform n^2 multiplication
     ac = karatsuba(a,c)
     bd = karatsuba(b,d)
     pq = karatsuba(p,q)
+    #variable for subtracting the sums
     adbc = pq - ac - bd
+    #T(n) = 3T((n/2) + n^2)
     ans = math.floor((math.pow(10,4) * ac) + ((math.pow(10,2)) * adbc) + bd)
     return ans
 
