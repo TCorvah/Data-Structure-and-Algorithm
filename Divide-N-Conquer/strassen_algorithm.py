@@ -1,90 +1,80 @@
 import math
 import numpy as np
 
+        
+def strassen_matrix_multiplication(a,b):   
+    n = a.shape[0]
+    if n == 1:
+        return np.dot(a, b)
     
-    
-     
-def strassen_matrix_multiplication(a,b): 
-    n = len(a)
-    if n <= 1:
-        return a * b
-       
-    
-    Amatrix = np.array(a)
-    row,col = Amatrix.shape
-    x,y = row//2, col//2     
-     
-    Bmatrix = np.array(b)  
-    rows,cols = Bmatrix.shape
-    r,w = rows//2, cols//2  
-    
-    R = [[0 for i in range(row)]for j in range(col)]
-    C = np.array(R)
+    row, col = a.shape
+    x,y = row//2, col//2
+    #assert len(Amatrix) == 2
+    #assert len(Bmatrix) == 2
+    #assert Amatrix[1] == Bmatrix[0]  
     
 
-    #a matrice partition into 4 
-    a11 =  Amatrix [:x, :y]
-    a12 =  Amatrix [:x,y:]
-    a21 =  Amatrix [x:, :y]
-    a22 =  Amatrix [x:, y:]
+    #a matrice partition into 4 rows
+
+    a11  = a[:x,:y]
+    a12 =  a[:x, y:]
+    a21 =  a[x:, :y]
+    a22 =  a[x:, y:]
+    
+     
+    brow, bcol = b.shape
+    c,w = brow//2, bcol//2
+    #b matrice partition into 4 columns
+    b11 =  b[:c, :w]
+    
+    b12 =  b[:c, w:]
+    b21 =  b[c:, :w]
+    b22 =  b[c:, w:]
+
+    
+    C = np.zeros((a.shape[0], b.shape[0]), dtype=int)
+    crow, ccol = C.shape
+    g,p = crow//2, ccol//2
+    c11 =  C[:g, :p]
+    c12 =  C[:g, p:]
+    c21 =  C[g:, :g]
+    c22 =  C[g:, g:]
    
-    #b matrice partition into 4
-    b11 =  Bmatrix[:r, :w]
-    b12 =  Bmatrix[:r,w:]
-    b21 =  Bmatrix[r:, :w]
-    b22 =  Bmatrix[r:, w:]
-
-    #10 submatrices created
-    s1 = np.subtract(b12, b22)
-    s2 = np.add(a11,a12)
-    s3 = np.add(a21,a22)
-    s4 = np.subtract(b21, b11)
-    s5 = np.add(a11,a22)
-    s6 = np.add(b11,b22)
-    s7 = np.subtract(a12,a22)
-    s8 = np.add(b21,b22)
-    s9 = np.subtract(a11,a21)
-    s10 = np.add(b11,b12)
-
     
     # matrice product of a,b 
-    p1 = strassen_matrix_multiplication(a11,s1)
-    p2 = strassen_matrix_multiplication(s2,b22) 
-    p3 = strassen_matrix_multiplication(s3, b11)
-    p4 = strassen_matrix_multiplication(a22,s4)
-    p5 = strassen_matrix_multiplication(s5,s6) 
-    p6 = strassen_matrix_multiplication(s7,s8)
-    p7 = strassen_matrix_multiplication(s9, s10)
+    p1 = strassen_matrix_multiplication(np.add(a11,a22),np.add(b11,b22))
+    p2 = strassen_matrix_multiplication(np.add(a21,a22),b11) 
+    p3 = strassen_matrix_multiplication(a11, np.subtract(b12,b22))
+    p4 = strassen_matrix_multiplication(a22,np.subtract(b21,b11))
+    p5 = strassen_matrix_multiplication(np.add(a11,a12),b22) 
+    p6 = strassen_matrix_multiplication(np.subtract(a21,a11),np.add(b11,b12))
+    p7 = strassen_matrix_multiplication(np.subtract(a12,a22), np.add(b21,b22))
     
-     
-    c11 = np.subtract((np.add(p5, p4)), (np.add(p2, p6)))
-    c12 = np.add(p1, p2)
-    c21 = np.add(p3,p4)
-    c22 = np.subtract(np.add(p5,p1 ), np.subtract(p3,p7))
+   
+     # blocks of c matrix
 
-  
-    C[:x, :y] = c11 
-    C[:x, y:] = c12
-    C[x:,:y] = c21
-    C[x:,y:] = c22
- 
+    c11 = p1 + p4 - p5 + p7
+    c12 = p3 + p5
+    c21  = p2 + p4
+    c22 = p1 - p2 + p3 + p6
+    C = np.vstack((np.hstack((c11, c12)), np.hstack((c21, c22)))) 
     return C
     
 
-A = [[1,1,1,1],
+A = np.array([
+     [1,1,1,1],
      [2,2,2,2],
      [3,3,3,3],
      [2,2,2,2]
-     ]
-B = [[1,1,1,1],
-     [2,2,2,2],
-     [3,3,3,3],
-     [2,2,2,2]
-     ]
+     ])
+B = np.array(
+    [
+        [1,1,1,1],
+        [2,2,2,2],
+        [3,3,3,3],
+        [2,2,2,2]
+     ])
 
-X = np.array(A)
-Y = np.array(B)
 
-x = strassen_matrix_multiplication(X,Y)
+x = strassen_matrix_multiplication(A,B)
 print(x)
-
