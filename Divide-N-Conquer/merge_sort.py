@@ -16,10 +16,10 @@ The combine step uses the merge subroutine to combine the elements in increasing
 # @file merge_sort.py
 def mergeSort(A):
     """! Sorts the elements in an array in a bottom up fashion
-    there are two recursive calls made in merge sort 0(lgn)
+    there are two recursive calls made in merge sort 0(nlgn)
     @param A  The unsorted sequence of integers in the array
 
-    @return  a sorted output using merge subroutine in O(nlgn) time complexity
+    @return  a sorted merge output in O(nlgn) time complexity
     """
     if len(A) <= 1:
         return A
@@ -32,9 +32,9 @@ def mergeSort(A):
 
 
 def merge(L,R):
-    """! The merge subroutine makes  comparison between the two subarray and
-         copies the smaller element in the list
-    @param A  The unsorted sequence of integers in the array
+    """! The merge subroutine compares elements of the two n/2 array and 
+         merges the elements either in the left subarray or the right subarray.
+    @param left and right subarays of n/2 each. Assume n is even
 
     @return  a merge output of the two subarray in O(n) time complexity,
 
