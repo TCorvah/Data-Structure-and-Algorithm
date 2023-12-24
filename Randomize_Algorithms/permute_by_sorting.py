@@ -4,6 +4,7 @@ The following algorithmn randomly permute an array by mapping an array to a prio
 and returning a new list of the one to one mapping of two arrays, with one containing priorities as keys 
 and the other array as values . The procedure produces a uniform random permutaion, as each random generated numbers are
 equally likely to be a priority.
+total runtime is O(N)
 """
 import math
 import random
