@@ -3,35 +3,28 @@ import sys
 """_summary_ The following uses dynamic programming to solve the rod-cutting
     problem. The code utilizes a bottom up method that enforces ordering
 """
-
-def rod_cut(price, m): 
-    """! a bottom up implementation of the rod cutting problem 
-        that enforces natural ordering on each subproblem.
+# @file bottom_up_cut_rod.py
+def bottom_up_cut_rod(p,n):
+    """! The  bottom up implementation of the rod cutting problem 
+        uses a natural ordering on each subproblem of size j, i, with j > i.
+        each subproblem size is save in an array revenue and returns when the input
+        n matches the price of the rod.
         the runtime of this code snippet is O(n)^2 as it iterates twice
         for each i,j in n.
-        @param the price and length of the array n 
-        @return The value of an optimal solution
-    """    
-    revenue = [0 for i in range(m + 1)]
-    revenue[0] = 0
-    for j in range(m + 1): 
-        q = 0 
-        for i in range(j):
-            q = max(q, (price[i] + revenue[j - i - 1]))
-        revenue[j] = q
-    return revenue[m]
-
-price = [1,5,8,9,10,17,17,20,24,30]
-m = len(price)
-v = rod_cut(price, 4)
-print(v)
+        @param the price p, and length of the rod n
+        @return a the revenue price, given the input n, which is the length of the rod.
+    """  
+    r = [0 for i in range(n+1)]
+    r[0] = 0
+    for j in range(n+1):
+        q = 0
+        for i in range(j+1):
+            q = max(q, p[i] + r[j-i-1])
+        r[j] = q
+    return r[n]
 
 
-
-
-
-
-def extended_rod_cut(price,n): 
+def reconstruction_rod_cut(price,n): 
     """! The extended bottom up implementation of the rod cutting problem 
         computes for each size j, not only the maximum revenue of r_j, but
         s_j, the optimal size for the first piecec to cut off.
@@ -65,16 +58,10 @@ def print_cut_rodSolution(price, n):
         run time is 0(n) as it prints the value in size,  coresponding to the revenue
     """  
     s = [0 for j in range(n + 1)] 
-    (r,s) = extended_rod_cut(price,n)
+    (r,s) = reconstruction_rod_cut(price,n)
     while n > 0:
         print(s[n], end = " ")
-        n = n - s[n]  
+        n = n - s[n] 
  
-       
-
-p = [1,5,8,9,10,17,17,20,24,30]
-x = print_cut_rodSolution(p,7)
-print(x)
-
-
+#p = [1,5,8,9,10,17,17,20,24,30]
 
