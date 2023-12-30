@@ -1,4 +1,6 @@
 import random
+import numpy as np
+from numpy import random
 import math
 from collections import defaultdict
 #!/usr/bin/env python3
@@ -12,33 +14,51 @@ total runtime is O(nlgn)
 
 """
 # @file  hire_assistant.py
-def hire_assistant(candidate, names):
-    random.shuffle(names)
-    hired =  defaultdict(list)
-    interview = defaultdict(list)
-    mid = len(candidate)//2
-    best_candidates = candidate[0:mid]
-    for i in range(len(names)):
-        interview[candidate[i]] = names[i]       
-    for k,v in interview.items():
-        if k in best_candidates:
-            hired["rank", k] = "hired", v
-    print(interview)
-    print("\n")
-    print(hired)
-            
-    chance = int((len(names) - math.log(len(names),2))) * 10
+def hire_assistant(names, n):
+    arr = random.permutation(names)
+    interview = []
+    for i in range(len(arr)):
+        rank = i + 3
+        interview.append((rank, arr[i]))
+    
+    hired = interview[n:]    
     print(len(interview), "sat interview, selection were based on ranks\n")
     print(len(hired), "were successful with ranks in decreasing order\n")  
-    print("chance of a candidate being hired is ", chance,"percent\n")
     print("\n")
-    return hired
+    return hired[::-1]  
+x =  ["Jill", "Sally", "Jane", "john", "Albert", "William", "Sam", "Tully"]
+n = 4
+s = hire_assistant(x, n)
+print(s)
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+         
+      
+        
+        
+        
+        
+        
+    
     
 
-Q = [10,9,8,7,6,5,4,3]
-x =  ["Jill", "Sally", "Jane", "john", "Albert", "William", "Sam", "Tully"]
-s = hire_assistant(Q,x)
-print(s)
+
+
+
 
     
     
