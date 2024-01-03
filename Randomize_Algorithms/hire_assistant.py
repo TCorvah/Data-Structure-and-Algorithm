@@ -19,13 +19,13 @@ def hire_assistant(names, n):
     interview = []
     for i in range(len(arr)):
         rank = i + 3
-        interview.append((rank, arr[i]))
-    
+        interview.append((rank, arr[i])) 
     hired = interview[n:]    
     print(len(interview), "sat interview, selection were based on ranks\n")
     print(len(hired), "were successful with ranks in decreasing order\n")  
     print("\n")
-    return hired[::-1]  
+    return hired[::-1]
+  
 x =  ["Jill", "Sally", "Jane", "john", "Albert", "William", "Sam", "Tully"]
 n = 4
 s = hire_assistant(x, n)
