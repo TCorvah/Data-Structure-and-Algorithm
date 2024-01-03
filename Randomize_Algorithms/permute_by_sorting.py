@@ -14,16 +14,15 @@ def permute_by_sorting(A):
     p = [0 for i in range(n)]
     assert len(A) == len(p)
     map_index = {}
-    permutaion_lst= []
+    permutation_lst= []
     for i in range(n):
         p[i] = random.randrange(i, n**3 - 1)
         map_index[p[i]] = A[i]
         
     sorted_lst = sorted(map_index.items())
     for i,j in sorted_lst:
-        permutaion_lst.append(j)   
-        
-    return sorted_lst, permutaion_lst
+        permutation_lst.append(j)          
+    return sorted_lst, permutation_lst
         
           
         
