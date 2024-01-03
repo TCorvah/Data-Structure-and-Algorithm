@@ -24,7 +24,7 @@ def random_pivot(A, p, r):
     @return an index of a uniformly random pivot
     """  
     x = int(random.uniform(p,r))
-    A[r], A[x], =  A[x], A[r]
+    A[r], A[x] =  A[x], A[r]
     return partition(A, p, r)
     
   
@@ -36,14 +36,12 @@ def partition(A, p, r):
     """  
     x = A[r]
     i = p - 1
-    for j in range(p, r): 
+    for j in range(p, r - 1): 
         if A[j] <= x:
             i += 1
             A[i],A[j] = A[j],A[i]
             j += 1
     A[i + 1], A[r] = A[r], A[i + 1]         
-    # The line `print(A[i + 1])` is printing the value of the pivot element after it has been placed in
-    # its correct position in the array.
     return i + 1
          
     
@@ -53,7 +51,9 @@ def main():
     A = [5,4,1,8,7,2,6,3]
     n = len(A)
     quick_sort(A,0, n - 1)
-    print(A)
+  
+
+    
     
 
 
