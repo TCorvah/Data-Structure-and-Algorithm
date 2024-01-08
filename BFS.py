@@ -4,12 +4,13 @@ class Node:
         self.key = key
         self.left = None
         self.right = None
+        self.dist = 0
     
     def createNode(self,data):
         node = Node(data) 
         node.key = data 
-        node.right = None
-        self.prev = node.left
+        node.dist = 0
+        node.right = node.left = None
         return node
 
 # A singly linklist queue implementation using breadth first search algorithm
@@ -19,12 +20,12 @@ class Queue:
     def __init__(self):
         self.front = None 
         self.tail = None 
-        self.size = 0 
+        self.dist = 0 
         
 
     def isEmpty(self):
         """Returns true if queue is empty, otherwise returns False"""
-        if self.size == 0:
+        if self.front == None:
             print("queue is empty\n")
             return True
         else:
@@ -39,13 +40,13 @@ class Queue:
         node = Node(value).createNode(value)
         if self.front == None:
             self.front = node
-            self.size += 1
+            self.dist = 0
         else:
             temp = self.front
             while temp.right:
                 temp = temp.right
             temp.right = node
-            self.size += 1
+            self.dist += 1
             
             
  
@@ -113,8 +114,8 @@ class Graph:
         start.key = startVertex
         self.visited.add(start.key)
         self.queue.enqueue(start.key)   
-        while not self.queue.isEmpty():
-            self.queue.PrintQueue()  
+        while not self.queue.isEmpty(): 
+            self.queue.PrintQueue() 
             currentVertex = self.queue.dequeue()
             print("visited node <- {}\n".format(currentVertex), end="")     
             temp = self.adjlist[currentVertex] 
@@ -122,10 +123,12 @@ class Graph:
                 adjvertex = temp.key 
                 if adjvertex not in self.visited:
                     self.visited.add(adjvertex)  
-                    self.queue.enqueue(adjvertex)   
+                    self.queue.enqueue(adjvertex) 
                 temp = temp.right         
            
         print(" \n")
+        
+        
            
           
               
