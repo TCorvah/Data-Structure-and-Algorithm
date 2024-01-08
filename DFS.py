@@ -99,11 +99,12 @@ class Graph:
     def DFS(self, startVertex):
         start = Node(startVertex).createNode(startVertex)
         start.data = startVertex
-        self.visited.add(start.data)
         self.stack.push(start.data)
         while not self.stack.isEmpty():
-            self.stack.PrintStack()  
+            self.stack.PrintStack() 
             currentVertex = self.stack.pop() 
+            if currentVertex not in self.visited:
+                self.visited.add(currentVertex)
             print("visited node <- {}\n".format(currentVertex), end="")  
             curr = self.adjlist[currentVertex]    
             while curr:
