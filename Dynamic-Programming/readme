@@ -1,0 +1,6 @@
+This section is dedicated to Dynamic programming.
+Like the divide and conqueur algorithms, DP solves problems 
+by saving its solution in a tabular form.
+The following implementations of DP is bottom up fashion fashion.
+
+DP is mainly use for optim,ization problems.
