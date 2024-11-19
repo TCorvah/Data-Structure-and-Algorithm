@@ -14,3 +14,9 @@ venv/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Ignore any folders that you don't want to track
+Divide-N-Conquer/
+Dynamic-Programming/
+Randomize_Algorithms/
+graph/
