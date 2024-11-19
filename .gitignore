@@ -1,0 +1,16 @@
+# Bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment folder
+venv/
+
+# IDE and editor configurations (if using VSCode)
+.vscode/
+
+# MacOS Finder files
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
