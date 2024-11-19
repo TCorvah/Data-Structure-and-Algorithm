@@ -1,0 +1,4 @@
+# .gitignore file
+# Ignore cache directories
+__pycache__/*.pyc
+*/.vscode.DS_Store
