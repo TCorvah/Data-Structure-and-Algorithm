@@ -4,7 +4,7 @@ This repository contains implementations of various data structures and algorith
 
 While the implementations may not always be fully optimized or may fail in some edge cases, they are intended primarily for learning purposes.
 
-## Installationls
+## Installation
 
 To use the code, simply install the latest version of Python (version 3.x recommended). You can download Python from the official website: [https://www.python.org/downloads/](https://www.python.org/downloads/).
 
