@@ -12,7 +12,8 @@ class Node:
 class Queue:
     def __init__(self):
         self.front = self.tail = None   
-        self.dist = 0 
+        self.dist = 0
+    
         
 
     def isEmpty(self):
@@ -65,6 +66,7 @@ class Graph:
         self.adjlist = defaultdict(list)
         self.visited = set() 
         self.queue = Queue()
+        self.pred = {} 
       
 
         
