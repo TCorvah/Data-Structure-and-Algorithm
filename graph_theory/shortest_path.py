@@ -1,4 +1,4 @@
-from bfs import Graph
+from breadth_first_search import Graph
 from nodes import Node
 from collections import deque
 
@@ -6,10 +6,10 @@ from collections import deque
 
 def BFS_ShortestPath(graph, startVertex, dest):  
         graph = Graph()     
-        start = Node(startVertex).createNode(startVertex)
+        start = Node(startVertex)
         start.key = startVertex
         start.dist = 0
-        end = Node(dest).createNode(dest)
+        end = Node(dest)
         end.key = dest
         start.left = None
         graph.visited.add(start.key)
@@ -24,8 +24,8 @@ def BFS_ShortestPath(graph, startVertex, dest):
             temp = graph.adjlist[currentVertex]         
             while temp:
                 adjvertex = temp.key  
-                n = Node(adjvertex).createNode(adjvertex)  
-                n.dist = Node(currentVertex).createNode(currentVertex).dist + 1
+                n = Node(adjvertex)
+                n.dist = Node(currentVertex).dist + 1
                 print(n.dist)    
                 if adjvertex not in graph.visited:          
                     graph.visited.add(adjvertex) 

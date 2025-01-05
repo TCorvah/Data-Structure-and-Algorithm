@@ -60,6 +60,7 @@ class Queue:
 # graph is being used. the graph class initialize the number of vertices, visited set and the queue class
 class Graph:
     def __init__(self, numVertices):
+        """Initialize graph with the given number of vertices."""
         self.v = numVertices
         self.adjlist = defaultdict(list)
         self.visited = set() 
@@ -68,8 +69,7 @@ class Graph:
 
         
     def addEdge(self, src, dest):
-        #add edge from src to dest:
-        # Check if dest is already in src's adjacency list
+        """Add an undirected edge between src and dest."""
         temp = self.adjlist[src]
         while temp:
             if temp.key == dest:
@@ -88,6 +88,7 @@ class Graph:
         
         
     def printGraph(self):
+        """Print the adjacency list of the graph."""
         for i in range(self.v):
             if i in self.adjlist:  # Check if the vertex has an adjacency list
                 temp = self.adjlist[i]
@@ -100,6 +101,7 @@ class Graph:
                 print(f"Adjacency list of vertex {i}\n head None \n")
             
     def bfs(self,startVertex):
+        """Perform BFS traversal starting from startVertex."""
         if startVertex not in self.adjlist:
             print(f"Error: Start vertex {startVertex} does not exist in the graph.")
             return
@@ -126,28 +128,31 @@ class Graph:
         
         
 def main():   
-    print("\ninitial graph operation")
-    val = int(input("Enter number of vertices: "))
-    print(val)
-    graph = Graph(val)
+    print("Welcome to the Graph Operations Program!")
+    numVertices = int(input("Enter number of vertices: "))
+    graph = Graph(numVertices)
     while True:
-            print("\nWhat do you want to do?\n")
-            print("1. Add edge\n")
-            print("2. Print graph\n")
-            print("3. BFS\n")
-            print("4. Exit\n")
-            choice = int(input("Enter your choice: "))        
+            print("\nChoose an operation:")
+            print("1.  Add Edge\n")
+            print("2.  Print Graph\n")
+            print("3.  BFS\n")
+            print("4.  Exit\n")
+            choice = int(input("Enter your choice: ")) 
+                   
             if choice == 1:
                  user_input = input("Enter source and destination:  ")
                  src, dest = tuple(int(item) for item in user_input.split())
                  print(src,dest)
                  graph.addEdge(src, dest)
+                 
             elif choice == 2:
                  graph.printGraph()
+                 
             elif choice == 3:    
                  startVertex = int(input("Enter starting vertex:  "))
                  print("starting vertex:",startVertex)
                  graph.bfs(startVertex)
+                 
             elif choice == 4:
                  print("bye\n")
                  break
