@@ -1,5 +1,6 @@
 from fib_tree import Fibtree
 
+
 class Node:
     """
         Initialize a new node for the Fibonacci heap.
